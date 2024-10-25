@@ -57,7 +57,7 @@ class _MySNState extends State<MySN> {
             ),
           ),
 
-          Container(
+          SizedBox(
             height: MediaQuery.of(context).size.height * 0.96,
             width: MediaQuery.of(context).size.width * 1,
             child: Padding(
@@ -137,11 +137,11 @@ class _MySNState extends State<MySN> {
                           print(
                               "VOCÊ SERÁ ENCAMINHADO PARA A TELA INICIAL");
                         },
-                        child: Text("Voltar"),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color.fromARGB(255, 1, 37, 54),
                           foregroundColor: Colors.white,
                         ),
+                        child: Text("Voltar"),
                       ),),
                         ],
                       )),
@@ -154,7 +154,7 @@ class _MySNState extends State<MySN> {
               children: [
                 FractionallySizedBox(
                   widthFactor: 0.95,
-                  child: Container(
+                  child: SizedBox(
                     height: 150,
                     child: Image.asset(
                       'assets/Images/logo.png',
