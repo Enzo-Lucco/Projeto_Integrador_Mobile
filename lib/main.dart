@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_projeto_integrador/InfoOng.dart';
 import 'package:flutter_application_projeto_integrador/sobrenos.dart';
 
 void main() {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: (const MySN()),
+      home: (const InfoOng()),
       );
   }
 }
