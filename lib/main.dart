@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_projeto_integrador/InfoOng.dart';
+import 'package:flutter_application_projeto_integrador/home.dart';
+import 'package:flutter_application_projeto_integrador/login.dart';
+import 'package:flutter_application_projeto_integrador/postagem.dart';
 import 'package:flutter_application_projeto_integrador/sobrenos.dart';
 
 void main() {
@@ -17,7 +20,13 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: (const InfoOng()),
+      routes: {
+        '/': (context) => MyTela(),
+        '/registro': (context) => InfoOng(),
+        '/login': (context) => MyLogin(),
+        '/postagem': (context) => CriarPost(),
+        '/SN': (context) => MySN(),
+      },
       );
   }
 }
