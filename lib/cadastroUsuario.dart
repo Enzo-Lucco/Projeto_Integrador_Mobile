@@ -107,11 +107,12 @@ class _clienteState extends State<cliente> {
                       height: 100,
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
-                          width: 150,
-                        ),
-                        ElevatedButton(
+                           width: 130,
+                           height: 35,
+                          child: ElevatedButton(
                             onPressed: () {
                               if (cliKey.currentState!.validate()) {
                                 print("********");
@@ -127,18 +128,52 @@ class _clienteState extends State<cliente> {
                               setState(() {});
                             },
                             child: Text("Cadastrar")),
+                            ),
                         SizedBox(
-                          width: 200,
+                          width: 100,
                         ),
-                        ElevatedButton(
+                        SizedBox(
+                           width: 130,
+                           height: 35,
+                          child: ElevatedButton(
                             onPressed: () {
                               nome1.text = "";
                               email1.text = "";
                               setState(() {});
                             },
                             child: Text("Cancelar")),
+                        ),
                       ],
                     ),
+                    SizedBox(height: 30,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Você é uma ONG?"),
+                        SizedBox(
+                  width: 130,
+                  height: 35,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      print("VOCÊ SERÁ ENCAMINHADO PARA A TELA SOBRE NÓS!");
+                    },
+                    child: Text(
+                      "Cadastre-se aqui!",
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                    style: TextButton.styleFrom(
+                      foregroundColor: const Color.fromARGB(120, 1, 37, 54),
+                      padding: EdgeInsets.zero,
+                      side: BorderSide.none,
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                    ),
+                  ),
+                ),
+                ],
+                    ),   
                   ],
                 ),
               ),

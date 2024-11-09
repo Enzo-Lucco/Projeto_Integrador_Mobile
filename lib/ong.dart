@@ -4,6 +4,7 @@ String _email="";
 String _cnpj="";
 
 
+
 Ong(this._cnpj,this._email,this._nome);
  String get nome => _nome;
 

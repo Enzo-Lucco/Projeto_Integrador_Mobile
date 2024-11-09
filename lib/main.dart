@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_projeto_integrador/InfoOng.dart';
+import 'package:flutter_application_projeto_integrador/cadastroOng.dart';
+import 'package:flutter_application_projeto_integrador/cadastroUsuario.dart';
 import 'package:flutter_application_projeto_integrador/home.dart';
 import 'package:flutter_application_projeto_integrador/login.dart';
 import 'package:flutter_application_projeto_integrador/postagem.dart';
@@ -21,11 +23,13 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       routes: {
-        '/': (context) => MyTela(),
+        '/CadUsuario': (context) => MyTela(),
         '/registro': (context) => InfoOng(),
         '/login': (context) => MyLogin(),
         '/postagem': (context) => CriarPost(),
         '/SN': (context) => MySN(),
+        "/": (context) => cliente(),
+        "/CadOng": (context) => ong(),
       },
       );
   }
