@@ -23,12 +23,12 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       routes: {
-        '/CadUsuario': (context) => MyTela(),
+        '/': (context) => MyTela(),
         '/registro': (context) => InfoOng(),
         '/login': (context) => MyLogin(),
         '/postagem': (context) => CriarPost(),
         '/SN': (context) => MySN(),
-        "/": (context) => cliente(),
+        "/CadUsuario": (context) => cliente(),
         "/CadOng": (context) => ong(),
       },
       );

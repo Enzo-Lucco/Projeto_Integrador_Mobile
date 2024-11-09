@@ -51,13 +51,14 @@ class _clienteState extends State<cliente> {
                 child: Column(
                   children: [
                     SizedBox(height: 150),
-                    Text(
+                      Text(
                       'CADASTRO DE CLIENTES',
                       style: TextStyle(
                         fontSize: 27,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                  
                     SizedBox(height: 50),
                     TextFormField(
                       controller: nome1,
@@ -69,7 +70,7 @@ class _clienteState extends State<cliente> {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30)),
                         filled: true,
-                        fillColor: Colors.blue,
+                        fillColor:Color.fromARGB(255, 1, 37, 54),
                       ),
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -91,7 +92,7 @@ class _clienteState extends State<cliente> {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30)),
                         filled: true,
-                        fillColor: Colors.blue,
+                        fillColor:Color.fromARGB(255, 1, 37, 54),
                       ),
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -155,7 +156,7 @@ class _clienteState extends State<cliente> {
                   height: 35,
                   child: ElevatedButton(
                     onPressed: () {
-                      print("VOCÊ SERÁ ENCAMINHADO PARA A TELA SOBRE NÓS!");
+                       Navigator.pushNamed(context, '/CadOng');
                     },
                     child: Text(
                       "Cadastre-se aqui!",
@@ -198,6 +199,21 @@ class _clienteState extends State<cliente> {
             ],
           ),
         ),
+        Positioned(
+      top: 1.0, // Ajuste conforme necessário
+      left: 1.0, // Ajuste conforme necessário
+      child: IconButton(
+        onPressed: () {
+          Navigator.pop(context); // Voltar para a tela anterior
+        },
+        icon: const Icon(
+          Icons.arrow_back,
+          color: Colors.white,
+          size: 20,
+        ),
+      ),
+    ),
+
       ]),
     );
   }
@@ -208,4 +224,4 @@ class _clienteState extends State<cliente> {
       print("Email : " + C.email);
     });
   }
-}
+}                

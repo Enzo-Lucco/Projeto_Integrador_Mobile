@@ -182,21 +182,6 @@ class _ongState extends State<ong> {
                                 ),
                           ],
                         ),
-                        /*ASDFGHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA*/
-                       Positioned(
-                         top: 300,
-                         left: 10,
-                         child: IconButton(
-                           onPressed: () {
-                            Navigator.pop(context); // Voltar para a tela anterior
-                            },
-                            icon: const Icon(
-                              Icons.arrow_back,
-                              color: Colors.white,
-                              size: 30,
-                               ),
-                               ),
-                               ),
                       ],
                     ),
                   ),
@@ -222,6 +207,20 @@ class _ongState extends State<ong> {
               ],
             ),
           ),
+          Positioned(
+      top: 1.0, // Ajuste conforme necessário
+      left: 1.0, // Ajuste conforme necessário
+      child: IconButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/'); // Voltar para a tela anterior
+        },
+        icon: const Icon(
+          Icons.arrow_back,
+          color: Colors.white,
+          size: 20,
+        ),
+      ),
+    ),
         ],
       ),
     );
