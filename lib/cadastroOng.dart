@@ -22,6 +22,7 @@ class _ongState extends State<ong> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       body: Stack(
         children: [
           //IMAGEM DE FUNDO
@@ -181,6 +182,21 @@ class _ongState extends State<ong> {
                                 ),
                           ],
                         ),
+                        /*ASDFGHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA*/
+                       Positioned(
+                         top: 300,
+                         left: 10,
+                         child: IconButton(
+                           onPressed: () {
+                            Navigator.pop(context); // Voltar para a tela anterior
+                            },
+                            icon: const Icon(
+                              Icons.arrow_back,
+                              color: Colors.white,
+                              size: 30,
+                               ),
+                               ),
+                               ),
                       ],
                     ),
                   ),

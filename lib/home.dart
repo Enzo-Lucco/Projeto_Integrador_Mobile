@@ -77,7 +77,7 @@ class _MyTelaState extends State<MyTela> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      print("VOCÊ SERÁ ENCAMINHADO PARA A TELA SOBRE NÓS!");
+                      Navigator.pushNamed(context, '/SN');
                     },
                     child: Text(
                       "Sobre Nós",
@@ -111,8 +111,7 @@ class _MyTelaState extends State<MyTela> {
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () {
-                          print(
-                              "VOCÊ SERÁ ENCAMINHADO PARA A TELA DE CADASTRO!");
+                          Navigator.pushNamed(context, '/CadUsuario');
                         },
                         child: Text("Cadastrar-se"),
                         style: ElevatedButton.styleFrom(
