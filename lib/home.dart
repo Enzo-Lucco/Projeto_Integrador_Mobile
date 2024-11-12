@@ -126,7 +126,7 @@ class _MyTelaState extends State<MyTela> {
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () {
-                          print("VOCÊ SERÁ ENCAMINHADO PARA A TELA DE LOGIN!");
+                          Navigator.pushNamed(context, '/login');
                         },
                         child: Text("Login"),
                         style: ElevatedButton.styleFrom(

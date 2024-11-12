@@ -13,6 +13,7 @@ class _ongState extends State<ong> {
   TextEditingController nome1 = TextEditingController();
   TextEditingController email1 = TextEditingController();
   TextEditingController cnpj1 = TextEditingController();
+  TextEditingController senhaController = TextEditingController();
   String _nomeO = "";
   String _emailO = "";
   String _cnpjO = "";
@@ -22,7 +23,6 @@ class _ongState extends State<ong> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: Stack(
         children: [
           //IMAGEM DE FUNDO
@@ -80,6 +80,7 @@ class _ongState extends State<ong> {
                             filled: true,
                             fillColor: Color.fromARGB(255, 1, 37, 54),
                           ),
+                          style: TextStyle(color: Colors.white),
                           validator: (value) {
                             if (value!.isEmpty) {
                               return "O nome não pode estar vazio";
@@ -102,6 +103,7 @@ class _ongState extends State<ong> {
                             filled: true,
                             fillColor: Color.fromARGB(255, 1, 37, 54),
                           ),
+                          style: TextStyle(color: Colors.white),
                           validator: (value) {
                             if (value!.isEmpty) {
                               return "O Email não deve ser vazio";
@@ -109,7 +111,7 @@ class _ongState extends State<ong> {
                                 !value.contains('.')) {
                               return "Por favor, insira um endereço de email válido";
                             }
-                            return null; // Retorna null se a validação for bem-sucedida
+                            return null;
                           },
                         ),
                         SizedBox(
@@ -127,6 +129,7 @@ class _ongState extends State<ong> {
                             filled: true,
                             fillColor: Color.fromARGB(255, 1, 37, 54),
                           ),
+                          style: TextStyle(color: Colors.white),
                           validator: (value) {
                             if (value!.isEmpty) {
                               return "O CNPJ não pode estar vazio";
@@ -137,34 +140,62 @@ class _ongState extends State<ong> {
                           },
                         ),
                         SizedBox(
+                          height: 50,
+                        ),
+                        TextFormField(
+                          controller: senhaController,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            labelText: 'Senha:',
+                            labelStyle: TextStyle(color: Colors.white),
+                            prefixIcon: Icon(Icons.lock),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            filled: true,
+                            fillColor: Color.fromARGB(255, 1, 37, 54),
+                          ),
+                          style: TextStyle(color: Colors.white),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Por favor, insira sua senha';
+                            } else {
+                              if (value.length < 3) {
+                                return "A senha deve ter pelo menos 3 caracteres";
+                              }
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(
                           height: 100,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                           SizedBox(
-                            width: 130,
-                            height: 35,
-                            child: ElevatedButton(
-                                onPressed: () {
-                                  if (ongKey.currentState!.validate()) {
-                                    print("********");
-                                  }
+                            SizedBox(
+                              width: 130,
+                              height: 35,
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    if (ongKey.currentState!.validate()) {
+                                      print("********");
+                                    }
 
-                                  _nomeO = nome1.text;
-                                  print("Nome: " + _nomeO);
-                                  _emailO = email1.text;
-                                  print("Email: " + _emailO);
-                                  _cnpjO = cnpj1.text;
-                                  print("CNPJ: " + _cnpjO);
+                                    _nomeO = nome1.text;
+                                    print("Nome: " + _nomeO);
+                                    _emailO = email1.text;
+                                    print("Email: " + _emailO);
+                                    _cnpjO = cnpj1.text;
+                                    print("CNPJ: " + _cnpjO);
 
-                                  Ong O = new Ong(_emailO, _nomeO, _cnpjO);
-                                  ListaOOng.add(O);
-                                  mostrar();
-                                  setState(() {});
-                                },
-                                child: Text("Cadastrar")),
-                           ),
+                                    Ong O = new Ong(_emailO, _nomeO, _cnpjO);
+                                    ListaOOng.add(O);
+                                    mostrar();
+                                    setState(() {});
+                                  },
+                                  child: Text("Cadastrar")),
+                            ),
                             SizedBox(
                               width: 100,
                             ),
@@ -172,14 +203,14 @@ class _ongState extends State<ong> {
                               width: 130,
                               height: 35,
                               child: ElevatedButton(
-                                onPressed: () {
-                                  nome1.text = "";
-                                  email1.text = "";
-                                  cnpj1.text = "";
-                                  setState(() {});
-                                },
-                                child: Text("Cancelar")),
-                                ),
+                                  onPressed: () {
+                                    nome1.text = "";
+                                    email1.text = "";
+                                    cnpj1.text = "";
+                                    setState(() {});
+                                  },
+                                  child: Text("Cancelar")),
+                            ),
                           ],
                         ),
                       ],
@@ -208,19 +239,19 @@ class _ongState extends State<ong> {
             ),
           ),
           Positioned(
-      top: 1.0, // Ajuste conforme necessário
-      left: 1.0, // Ajuste conforme necessário
-      child: IconButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/'); // Voltar para a tela anterior
-        },
-        icon: const Icon(
-          Icons.arrow_back,
-          color: Colors.white,
-          size: 20,
-        ),
-      ),
-    ),
+            top: 1.0,
+            left: 1.0,
+            child: IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/');
+              },
+              icon: const Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+                size: 20,
+              ),
+            ),
+          ),
         ],
       ),
     );

@@ -12,6 +12,7 @@ class _clienteState extends State<cliente> {
   GlobalKey<FormState> cliKey = GlobalKey<FormState>();
   TextEditingController nome1 = TextEditingController();
   TextEditingController email1 = TextEditingController();
+  TextEditingController senhaController = TextEditingController();
   String _nomeC = "";
   String _emailC = "";
   List<Cliente> ListaCCliente = [];
@@ -51,14 +52,13 @@ class _clienteState extends State<cliente> {
                 child: Column(
                   children: [
                     SizedBox(height: 150),
-                      Text(
+                    Text(
                       'CADASTRO DE CLIENTES',
                       style: TextStyle(
                         fontSize: 27,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  
                     SizedBox(height: 50),
                     TextFormField(
                       controller: nome1,
@@ -70,8 +70,9 @@ class _clienteState extends State<cliente> {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30)),
                         filled: true,
-                        fillColor:Color.fromARGB(255, 1, 37, 54),
+                        fillColor: Color.fromARGB(255, 1, 37, 54),
                       ),
+                      style: TextStyle(color: Colors.white),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "O nome não pode estar vazio";
@@ -92,8 +93,9 @@ class _clienteState extends State<cliente> {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30)),
                         filled: true,
-                        fillColor:Color.fromARGB(255, 1, 37, 54),
+                        fillColor: Color.fromARGB(255, 1, 37, 54),
                       ),
+                      style: TextStyle(color: Colors.white),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "O Email não deve ser vazio";
@@ -105,76 +107,107 @@ class _clienteState extends State<cliente> {
                       },
                     ),
                     SizedBox(
+                      height: 50,
+                    ),
+                    TextFormField(
+                      controller: senhaController,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        labelText: 'Senha:',
+                        labelStyle: TextStyle(color: Colors.white),
+                        prefixIcon: Icon(Icons.lock),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        filled: true,
+                        fillColor: Color.fromARGB(255, 1, 37, 54),
+                      ),
+                      style: TextStyle(color: Colors.white),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Por favor, insira sua senha';
+                        } else {
+                          if (value.length < 3) {
+                            return "A senha deve ter pelo menos 3 caracteres";
+                          }
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(
                       height: 100,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
-                           width: 130,
-                           height: 35,
+                          width: 130,
+                          height: 35,
                           child: ElevatedButton(
-                            onPressed: () {
-                              if (cliKey.currentState!.validate()) {
-                                print("********");
-                              }
-                              _nomeC = nome1.text;
-                              print("Nome: " + _nomeC);
-                              _emailC = email1.text;
-                              print("Email: " + _emailC);
+                              onPressed: () {
+                                if (cliKey.currentState!.validate()) {
+                                  print("********");
+                                }
+                                _nomeC = nome1.text;
+                                print("Nome: " + _nomeC);
+                                _emailC = email1.text;
+                                print("Email: " + _emailC);
 
-                              Cliente C = new Cliente(_emailC, _nomeC);
-                              ListaCCliente.add(C);
-                              mostrar();
-                              setState(() {});
-                            },
-                            child: Text("Cadastrar")),
-                            ),
+                                Cliente C = new Cliente(_emailC, _nomeC);
+                                ListaCCliente.add(C);
+                                mostrar();
+                                setState(() {});
+                              },
+                              child: Text("Cadastrar")),
+                        ),
                         SizedBox(
                           width: 100,
                         ),
                         SizedBox(
-                           width: 130,
-                           height: 35,
+                          width: 130,
+                          height: 35,
                           child: ElevatedButton(
-                            onPressed: () {
-                              nome1.text = "";
-                              email1.text = "";
-                              setState(() {});
-                            },
-                            child: Text("Cancelar")),
+                              onPressed: () {
+                                nome1.text = "";
+                                email1.text = "";
+                                setState(() {});
+                              },
+                              child: Text("Cancelar")),
                         ),
                       ],
                     ),
-                    SizedBox(height: 30,),
+                    SizedBox(
+                      height: 30,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text("Você é uma ONG?"),
                         SizedBox(
-                  width: 130,
-                  height: 35,
-                  child: ElevatedButton(
-                    onPressed: () {
-                       Navigator.pushNamed(context, '/CadOng');
-                    },
-                    child: Text(
-                      "Cadastre-se aqui!",
-                      style: TextStyle(
-                        decoration: TextDecoration.underline,
-                      ),
+                          width: 130,
+                          height: 35,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/CadOng');
+                            },
+                            child: Text(
+                              "Cadastre-se aqui!",
+                              style: TextStyle(
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                            style: TextButton.styleFrom(
+                              foregroundColor:
+                                  const Color.fromARGB(120, 1, 37, 54),
+                              padding: EdgeInsets.zero,
+                              side: BorderSide.none,
+                              backgroundColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    style: TextButton.styleFrom(
-                      foregroundColor: const Color.fromARGB(120, 1, 37, 54),
-                      padding: EdgeInsets.zero,
-                      side: BorderSide.none,
-                      backgroundColor: Colors.transparent,
-                      shadowColor: Colors.transparent,
-                    ),
-                  ),
-                ),
-                ],
-                    ),   
                   ],
                 ),
               ),
@@ -200,20 +233,19 @@ class _clienteState extends State<cliente> {
           ),
         ),
         Positioned(
-      top: 1.0, // Ajuste conforme necessário
-      left: 1.0, // Ajuste conforme necessário
-      child: IconButton(
-        onPressed: () {
-          Navigator.pop(context); // Voltar para a tela anterior
-        },
-        icon: const Icon(
-          Icons.arrow_back,
-          color: Colors.white,
-          size: 20,
+          top: 1.0,
+          left: 1.0,
+          child: IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/');
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+              size: 20,
+            ),
+          ),
         ),
-      ),
-    ),
-
       ]),
     );
   }
@@ -224,4 +256,4 @@ class _clienteState extends State<cliente> {
       print("Email : " + C.email);
     });
   }
-}                
+}
