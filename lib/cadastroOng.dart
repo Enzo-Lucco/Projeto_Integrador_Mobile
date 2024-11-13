@@ -145,7 +145,7 @@ class _ongState extends State<ong> {
                             if (value!.isEmpty) {
                               return "O CNPJ não pode estar vazio";
                             } else if (value.length != 3) {
-                              return "CNPJ inválido";
+                              return "CNPJ inválido (3)";
                             }
                             return null;
                           },
