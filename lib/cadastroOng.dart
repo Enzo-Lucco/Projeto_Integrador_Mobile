@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_projeto_integrador/ong.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ong extends StatefulWidget {
   const ong({super.key});
@@ -13,12 +15,21 @@ class _ongState extends State<ong> {
   TextEditingController nome1 = TextEditingController();
   TextEditingController email1 = TextEditingController();
   TextEditingController cnpj1 = TextEditingController();
-  TextEditingController senhaController = TextEditingController();
-  String _nomeO = "";
-  String _emailO = "";
-  String _cnpjO = "";
+  Ong O = Ong();
 
   List<Ong> ListaOOng = [];
+
+  Future<void> gravarBD() async {
+    var url = Uri.parse('http://localhost:8080/apiOng/inserirOng');
+    await http.post(url,
+        headers: {'Content-type': 'application/json; charset=UTF-8'},
+        body: jsonEncode({
+          "cnpj": O.cnpj,
+          "email": O.email,
+          "nome": O.nome,
+        }));
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -133,36 +144,8 @@ class _ongState extends State<ong> {
                           validator: (value) {
                             if (value!.isEmpty) {
                               return "O CNPJ não pode estar vazio";
-                            } else if (value.length != 14) {
+                            } else if (value.length != 3) {
                               return "CNPJ inválido";
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(
-                          height: 50,
-                        ),
-                        TextFormField(
-                          controller: senhaController,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            labelText: 'Senha:',
-                            labelStyle: TextStyle(color: Colors.white),
-                            prefixIcon: Icon(Icons.lock),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            filled: true,
-                            fillColor: Color.fromARGB(255, 1, 37, 54),
-                          ),
-                          style: TextStyle(color: Colors.white),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Por favor, insira sua senha';
-                            } else {
-                              if (value.length < 3) {
-                                return "A senha deve ter pelo menos 3 caracteres";
-                              }
                             }
                             return null;
                           },
@@ -181,17 +164,16 @@ class _ongState extends State<ong> {
                                     if (ongKey.currentState!.validate()) {
                                       print("********");
                                     }
-
-                                    _nomeO = nome1.text;
-                                    print("Nome: " + _nomeO);
-                                    _emailO = email1.text;
-                                    print("Email: " + _emailO);
-                                    _cnpjO = cnpj1.text;
-                                    print("CNPJ: " + _cnpjO);
-
-                                    Ong O = new Ong(_emailO, _nomeO, _cnpjO);
-                                    ListaOOng.add(O);
-                                    mostrar();
+                                    int cnpj = int.parse(cnpj1.text);
+                                    String email = email1.text;
+                                    String nome = nome1.text;
+                                    O.cnpj = cnpj;
+                                    O.email = email;
+                                    O.nome = nome;
+                                    gravarBD();
+                                    nome1.text = "";
+                                    email1.text = "";
+                                    cnpj1.text = "";
                                     setState(() {});
                                   },
                                   child: Text("Cadastrar")),
@@ -255,13 +237,5 @@ class _ongState extends State<ong> {
         ],
       ),
     );
-  }
-
-  void mostrar() {
-    ListaOOng.forEach((Ong O) {
-      print("Nome : " + O.nome);
-      print("Email : " + O.email);
-      print("CNPJ:" + O.cnpj);
-    });
   }
 }
