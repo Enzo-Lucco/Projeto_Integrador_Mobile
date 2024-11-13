@@ -82,39 +82,49 @@ class _InfoOngState extends State<InfoOng> {
         title: Text("Registro de ONGs"),
         backgroundColor: Colors.amber,
       ),
-      body: ListView.builder(
-        itemCount: listaOng.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-                side: BorderSide(color: Colors.grey.shade300, width: 1),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: listaOng.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          child: Text(
+                            listaOng[index].nome[0].toUpperCase(),
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          backgroundColor: Color.fromARGB(255, 1, 37, 54),
+                        ),
+                        title: Text(listaOng[index].nome.toString()),
+                        subtitle: Text(listaOng[index].email.toString()),
+                        trailing: IconButton(
+                          icon: Icon(
+                            Icons.delete,
+                            color: Color.fromARGB(255, 1, 37, 54),
+                          ),
+                          onPressed: () {
+                            confirmarExclusao(index);
+                          },
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
-              child: ListTile(
-                leading: CircleAvatar(
-                  child: Text(
-                    listaOng[index].nome[0].toUpperCase(),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  backgroundColor: Color.fromARGB(255, 1, 37, 54),
-                ),
-                title: Text(listaOng[index].nome.toString()),
-                subtitle: Text(listaOng[index].email.toString()),
-                trailing: IconButton(
-                  icon: Icon(
-                    Icons.delete,
-                    color: Color.fromARGB(255, 1, 37, 54),
-                  ),
-                  onPressed: () {
-                    confirmarExclusao(index);
-                  },
-                ),
-              ),
-            ),
-          );
-        },
+            ],
+          ),
+        ),
       ),
       backgroundColor: Colors.blueGrey,
     );

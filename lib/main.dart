@@ -23,8 +23,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       routes: {
-        '/registro': (context) => MyTela(),
-        '/': (context) => InfoOng(),
+        '/': (context) => MyTela(),
+        '/registro': (context) => InfoOng(),
         '/login': (context) => MyLogin(),
         '/postagem': (context) => CriarPost(),
         '/SN': (context) => MySN(),

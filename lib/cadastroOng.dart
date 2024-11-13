@@ -36,7 +36,7 @@ class _ongState extends State<ong> {
     return Scaffold(
       body: Stack(
         children: [
-          //IMAGEM DE FUNDO
+          // IMAGEM DE FUNDO
           Container(
             height: double.infinity,
             width: double.infinity,
@@ -46,7 +46,7 @@ class _ongState extends State<ong> {
                   fit: BoxFit.cover),
             ),
           ),
-          //TELA BRANCA NA FRENTE DA IMAGEM
+          // TELA BRANCA NA FRENTE DA IMAGEM
           Center(
             child: Container(
               height: MediaQuery.of(context).size.height * 0.90,
@@ -162,19 +162,18 @@ class _ongState extends State<ong> {
                               child: ElevatedButton(
                                   onPressed: () {
                                     if (ongKey.currentState!.validate()) {
-                                      print("********");
+                                      int cnpj = int.parse(cnpj1.text);
+                                      String email = email1.text;
+                                      String nome = nome1.text;
+                                      O.cnpj = cnpj;
+                                      O.email = email;
+                                      O.nome = nome;
+                                      gravarBD();
+                                      nome1.text = "";
+                                      email1.text = "";
+                                      cnpj1.text = "";
+                                      setState(() {});
                                     }
-                                    int cnpj = int.parse(cnpj1.text);
-                                    String email = email1.text;
-                                    String nome = nome1.text;
-                                    O.cnpj = cnpj;
-                                    O.email = email;
-                                    O.nome = nome;
-                                    gravarBD();
-                                    nome1.text = "";
-                                    email1.text = "";
-                                    cnpj1.text = "";
-                                    setState(() {});
                                   },
                                   child: Text("Cadastrar")),
                             ),
@@ -202,7 +201,7 @@ class _ongState extends State<ong> {
               ),
             ),
           ),
-          //BANNER DO APP
+          // BANNER DO APP
           Center(
             child: Column(
               children: [
@@ -231,6 +230,19 @@ class _ongState extends State<ong> {
                 Icons.arrow_back,
                 color: Colors.white,
                 size: 20,
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 30,
+            right: 30,
+            child: IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/registro');
+              },
+              icon: Icon(
+                Icons.arrow_forward,
+                color: Colors.white.withOpacity(0.5),
               ),
             ),
           ),
