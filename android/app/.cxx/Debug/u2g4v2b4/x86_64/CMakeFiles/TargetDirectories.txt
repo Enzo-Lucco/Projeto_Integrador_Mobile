@@ -1,0 +1,2 @@
+C:/Users/eduar/Downloads/Projeto_Integrador_Mobile/android/app/.cxx/Debug/u2g4v2b4/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/eduar/Downloads/Projeto_Integrador_Mobile/android/app/.cxx/Debug/u2g4v2b4/x86_64/CMakeFiles/rebuild_cache.dir
