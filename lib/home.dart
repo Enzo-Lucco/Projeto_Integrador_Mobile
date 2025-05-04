@@ -29,14 +29,13 @@ class _MyTelaState extends State<MyTela> {
             ),
           ),
 
-          // Conteúdo principal com scroll
           Center(
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  const SizedBox(height: 60), // Espaço superior
+                  const SizedBox(height: 60), 
 
-                  // Imagem de topo com canto superior arredondado
+                  // Imagem de topo 
                   ClipRRect(
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(20),
@@ -83,7 +82,6 @@ class _MyTelaState extends State<MyTela> {
                         ),
                         const SizedBox(height: 10),
 
-                        // Botão "Sobre Nós"
                         TextButton(
                           onPressed: () {
                             Navigator.pushNamed(context, '/SN');
@@ -99,7 +97,6 @@ class _MyTelaState extends State<MyTela> {
                         ),
                         const SizedBox(height: 30),
 
-                        // Botões
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -146,7 +143,7 @@ class _MyTelaState extends State<MyTela> {
                     ),
                   ),
 
-                  const SizedBox(height: 40), // Espaço inferior
+                  const SizedBox(height: 40), 
                 ],
               ),
             ),

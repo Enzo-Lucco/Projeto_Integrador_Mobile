@@ -37,14 +37,12 @@ class _clienteState extends State<cliente> {
               ),
             ),
           ),
-
-          // Conteúdo rolável
+          
           SingleChildScrollView(
             child: Column(
               children: [
                 const SizedBox(height: 10),
 
-                // Botão voltar sobre a imagem
                 SafeArea(
                   child: Align(
                     alignment: Alignment.topLeft,
@@ -61,7 +59,7 @@ class _clienteState extends State<cliente> {
                   ),
                 ),
 
-                // Imagem de topo com canto superior arredondado
+                // Imagem de topo 
                 ClipRRect(
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
@@ -77,7 +75,7 @@ class _clienteState extends State<cliente> {
                   ),
                 ),
 
-                // Container branco colado na imagem
+                // Container branco
                 Container(
                   width: larguraTela * 0.9,
                   decoration: const BoxDecoration(
@@ -108,7 +106,6 @@ class _clienteState extends State<cliente> {
                         ),
                         const SizedBox(height: 40),
 
-                        // Campo Nome
                         TextFormField(
                           controller: nome1,
                           keyboardType: TextInputType.text,
@@ -132,7 +129,6 @@ class _clienteState extends State<cliente> {
                         ),
                         const SizedBox(height: 30),
 
-                        // Campo Email
                         TextFormField(
                           controller: email1,
                           keyboardType: TextInputType.emailAddress,
@@ -159,7 +155,6 @@ class _clienteState extends State<cliente> {
                         ),
                         const SizedBox(height: 30),
 
-                        // Campo Senha
                         TextFormField(
                           controller: senhaController,
                           obscureText: true,
@@ -185,7 +180,6 @@ class _clienteState extends State<cliente> {
                         ),
                         const SizedBox(height: 40),
 
-                        // Botões
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -240,7 +234,6 @@ class _clienteState extends State<cliente> {
                         ),
                         const SizedBox(height: 30),
 
-                        // Link ONG
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
