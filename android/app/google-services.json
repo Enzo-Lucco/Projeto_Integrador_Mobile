@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "350051013789",
+    "project_id": "portal-ongs",
+    "storage_bucket": "portal-ongs.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:350051013789:android:03cad6382f51caa57f7074",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_projeto_integrador"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABOptCMgE4UnSzO6UWl9et9akAVmq1jcs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
