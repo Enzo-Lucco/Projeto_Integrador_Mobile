@@ -17,8 +17,6 @@ class _ongState extends State<ong> {
   TextEditingController cnpj1 = TextEditingController();
   Ong O = Ong();
 
-  List<Ong> ListaOOng = [];
-
   Future<void> gravarBD() async {
     var url = Uri.parse('http://localhost:8080/apiOng/inserirOng');
     await http.post(url,
@@ -33,133 +31,150 @@ class _ongState extends State<ong> {
 
   @override
   Widget build(BuildContext context) {
+    final double larguraTela = MediaQuery.of(context).size.width;
+    final double alturaTela = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: Stack(
         children: [
-          // IMAGEM DE FUNDO
           Container(
-            height: double.infinity,
             width: double.infinity,
+            height: double.infinity,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage("assets/images/fundo.jpg"),
-                  fit: BoxFit.cover),
-            ),
-          ),
-          // TELA BRANCA NA FRENTE DA IMAGEM
-          Center(
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.90,
-              width: MediaQuery.of(context).size.width * 0.95,
-              color: Colors.white,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                image: AssetImage("assets/images/fundo.jpg"),
+                fit: BoxFit.cover,
               ),
             ),
           ),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.90,
-            width: MediaQuery.of(context).size.width * 0.98,
+          Center(
             child: SingleChildScrollView(
-              child: SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.all(50),
-                  child: Form(
-                    key: ongKey,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 150,
-                        ),
-                        Text(
-                          'CADASTRO DE ONGS',
-                          style: TextStyle(
-                            fontSize: 27,
-                            fontWeight: FontWeight.bold,
+              child: Column(
+                children: [
+                  const SizedBox(height: 60),
+                  ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                    child: SizedBox(
+                      width: larguraTela * 0.88,
+                      height: 150,
+                      child: Image.asset(
+                        'assets/images/logo.png',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: larguraTela * 0.88,
+                    height: alturaTela * 0.68,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 30, horizontal: 20),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20),
+                      ),
+                    ),
+                    child: Form(
+                      key: ongKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'CADASTRO DE ONGS',
+                            style: TextStyle(
+                              fontSize: 26,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 50),
-                        TextFormField(
-                          controller: nome1,
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            labelText: "Nome:",
-                            labelStyle: TextStyle(color: Colors.white),
-                            prefixIcon: Icon(Icons.badge),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30)),
-                            filled: true,
-                            fillColor: Color.fromARGB(255, 1, 37, 54),
+                          const SizedBox(height: 30),
+                          TextFormField(
+                            controller: nome1,
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                              labelText: "Nome:",
+                              labelStyle: const TextStyle(color: Colors.white),
+                              prefixIcon: const Icon(Icons.badge),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              filled: true,
+                              fillColor: const Color.fromARGB(255, 1, 37, 54),
+                            ),
+                            style: const TextStyle(color: Colors.white),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "O nome não pode estar vazio";
+                              }
+                              return null;
+                            },
                           ),
-                          style: TextStyle(color: Colors.white),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "O nome não pode estar vazio";
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(
-                          height: 50,
-                        ),
-                        TextFormField(
-                          controller: email1,
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            labelText: "Email:",
-                            labelStyle: TextStyle(color: Colors.white),
-                            prefixIcon: Icon(Icons.email),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30)),
-                            filled: true,
-                            fillColor: Color.fromARGB(255, 1, 37, 54),
+                          const SizedBox(height: 30),
+                          TextFormField(
+                            controller: email1,
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: InputDecoration(
+                              labelText: "Email:",
+                              labelStyle: const TextStyle(color: Colors.white),
+                              prefixIcon: const Icon(Icons.email),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              filled: true,
+                              fillColor: const Color.fromARGB(255, 1, 37, 54),
+                            ),
+                            style: const TextStyle(color: Colors.white),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "O Email não deve ser vazio";
+                              } else if (!value.contains('@') ||
+                                  !value.contains('.')) {
+                                return "Por favor, insira um email válido";
+                              }
+                              return null;
+                            },
                           ),
-                          style: TextStyle(color: Colors.white),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "O Email não deve ser vazio";
-                            } else if (!value.contains('@') ||
-                                !value.contains('.')) {
-                              return "Por favor, insira um endereço de email válido";
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(
-                          height: 50,
-                        ),
-                        TextFormField(
-                          controller: cnpj1,
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            labelText: "CNPJ:",
-                            labelStyle: TextStyle(color: Colors.white),
-                            prefixIcon: Icon(Icons.document_scanner),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30)),
-                            filled: true,
-                            fillColor: Color.fromARGB(255, 1, 37, 54),
+                          const SizedBox(height: 30),
+                          TextFormField(
+                            controller: cnpj1,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              labelText: "CNPJ:",
+                              labelStyle: const TextStyle(color: Colors.white),
+                              prefixIcon: const Icon(Icons.document_scanner),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              filled: true,
+                              fillColor: const Color.fromARGB(255, 1, 37, 54),
+                            ),
+                            style: const TextStyle(color: Colors.white),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "O CNPJ não pode estar vazio";
+                              } else if (value.length < 14) {
+                                return "CNPJ inválido";
+                              }
+                              return null;
+                            },
                           ),
-                          style: TextStyle(color: Colors.white),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "O CNPJ não pode estar vazio";
-                            } else if (value.length != 3) {
-                              return "CNPJ inválido (3)";
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(
-                          height: 100,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: 130,
-                              height: 35,
-                              child: ElevatedButton(
+                          const SizedBox(height: 40),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        const Color.fromARGB(255, 1, 37, 54),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 16),
+                                  ),
                                   onPressed: () {
                                     if (ongKey.currentState!.validate()) {
                                       int cnpj = int.parse(cnpj1.text);
@@ -169,73 +184,60 @@ class _ongState extends State<ong> {
                                       O.email = email;
                                       O.nome = nome;
                                       gravarBD();
-                                      nome1.text = "";
-                                      email1.text = "";
-                                      cnpj1.text = "";
-                                      setState(() {});
+                                      nome1.clear();
+                                      email1.clear();
+                                      cnpj1.clear();
                                     }
                                   },
-                                  child: Text("Cadastrar")),
-                            ),
-                            SizedBox(
-                              width: 100,
-                            ),
-                            SizedBox(
-                              width: 130,
-                              height: 35,
-                              child: ElevatedButton(
+                                  child: const Text("Cadastrar",
+                                      style: TextStyle(color: Colors.white)),
+                                ),
+                              ),
+                              const SizedBox(width: 20),
+                              Expanded(
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        const Color.fromARGB(255, 1, 37, 54),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 16),
+                                  ),
                                   onPressed: () {
-                                    nome1.text = "";
-                                    email1.text = "";
-                                    cnpj1.text = "";
-                                    setState(() {});
+                                    nome1.clear();
+                                    email1.clear();
+                                    cnpj1.clear();
                                   },
-                                  child: Text("Cancelar")),
-                            ),
-                          ],
-                        ),
-                      ],
+                                  child: const Text("Cancelar",
+                                      style: TextStyle(color: Colors.white)),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
+                  const SizedBox(height: 40),
+                ],
               ),
             ),
           ),
-          // BANNER DO APP
-          Center(
-            child: Column(
-              children: [
-                SizedBox(height: 30),
-                FractionallySizedBox(
-                  widthFactor: 0.95,
-                  child: Container(
-                    height: 150,
-                    child: Image.asset(
-                      'assets/images/logo.png',
-                      fit: BoxFit.fitWidth,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
           Positioned(
-            top: 1.0,
-            left: 1.0,
+            top: 30,
+            left: 0,
             child: IconButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/');
               },
-              icon: const Icon(
-                Icons.arrow_back,
-                color: Colors.white,
-                size: 20,
-              ),
+              icon: const Icon(Icons.arrow_back, color: Colors.white, size: 28),
             ),
           ),
           Positioned(
-            bottom: 30,
-            right: 30,
+            bottom: 20,
+            right: 20,
             child: IconButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/registro');
