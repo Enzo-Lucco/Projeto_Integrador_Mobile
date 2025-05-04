@@ -1,0 +1,2 @@
+C:/Users/eduar/Downloads/Projeto_Integrador_Mobile/android/app/.cxx/Debug/3z6sb5m3/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/eduar/Downloads/Projeto_Integrador_Mobile/android/app/.cxx/Debug/3z6sb5m3/armeabi-v7a/CMakeFiles/rebuild_cache.dir
