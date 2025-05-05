@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart'; // Firebase Core
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Firebase Auth
 
 import 'package:flutter_application_projeto_integrador/cadastroOng.dart';
 import 'package:flutter_application_projeto_integrador/cadastroUsuario.dart';
@@ -11,7 +12,16 @@ import 'package:flutter_application_projeto_integrador/sobrenos.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(); // Inicialização do Firebase
+  await Firebase.initializeApp();
+
+  try {
+    UserCredential userCredential =
+        await FirebaseAuth.instance.signInAnonymously();
+    print('Firebase conectado! UID anônimo: ${userCredential.user?.uid}');
+  } catch (e) {
+    print('Erro ao conectar com Firebase: $e');
+  }
+
   runApp(const MyApp());
 }
 
