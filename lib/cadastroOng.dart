@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ong extends StatefulWidget {
   const ong({super.key});
@@ -16,16 +17,23 @@ class _ongState extends State<ong> {
   TextEditingController senha1 = TextEditingController();
   TextEditingController cep1 = TextEditingController();
 
-  final CollectionReference ongCollection =
-      FirebaseFirestore.instance.collection('ongs');
-
   Future<void> gravarBD() async {
     try {
-      await ongCollection.add({
+      // Criar usuário no Firebase Authentication
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email1.text.trim(),
+        password: senha1.text.trim(),
+      );
+
+      // Pega o UID do usuário criado
+      String uid = userCredential.user!.uid;
+
+      // Salvar dados da ONG no Firestore com o UID como id do documento
+      await FirebaseFirestore.instance.collection('ongs').doc(uid).set({
         "nome": nome1.text.trim(),
         "email": email1.text.trim(),
         "cnpj": cnpj1.text.trim(),
-        "senha": senha1.text.trim(),
         "cep": cep1.text.trim(),
         "tipo": "ong",
         "created_at": Timestamp.now(),
@@ -40,6 +48,10 @@ class _ongState extends State<ong> {
       cnpj1.clear();
       senha1.clear();
       cep1.clear();
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro no cadastro: ${e.message}')),
+      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Erro ao cadastrar ONG: $e')),
@@ -51,7 +63,6 @@ class _ongState extends State<ong> {
   @override
   Widget build(BuildContext context) {
     final double larguraTela = MediaQuery.of(context).size.width;
-    final double alturaTela = MediaQuery.of(context).size.height;
 
     return Scaffold(
       body: Stack(

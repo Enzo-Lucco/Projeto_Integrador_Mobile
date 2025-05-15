@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // Firebase Firestore
-import 'package:flutter_application_projeto_integrador/cliente.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class cliente extends StatefulWidget {
   const cliente({super.key});
@@ -16,9 +16,46 @@ class _clienteState extends State<cliente> {
   TextEditingController senhaController = TextEditingController();
   TextEditingController cpfController = TextEditingController();
 
-  String _nomeC = "";
-  String _emailC = "";
-  List<Cliente> ListaCCliente = [];
+  Future<void> gravarBD() async {
+    try {
+      // Criar usuário no Firebase Authentication
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email1.text.trim(),
+        password: senhaController.text.trim(),
+      );
+
+      // Pegar UID do usuário criado
+      String uid = userCredential.user!.uid;
+
+      // Salvar dados do cliente no Firestore usando UID como ID do documento
+      await FirebaseFirestore.instance.collection('users').doc(uid).set({
+        'nome': nome1.text.trim(),
+        'email': email1.text.trim(),
+        'cpf': cpfController.text.trim(),
+        'tipo': 'cliente',
+        'created_at': Timestamp.now(),
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Cadastro realizado com sucesso!')),
+      );
+
+      nome1.clear();
+      email1.clear();
+      senhaController.clear();
+      cpfController.clear();
+      setState(() {});
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro no cadastro: ${e.message}')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao cadastrar: $e')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -164,8 +201,8 @@ class _clienteState extends State<cliente> {
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Por favor, insira sua senha';
-                            } else if (value.length < 3) {
-                              return "A senha deve ter pelo menos 3 caracteres";
+                            } else if (value.length < 6) {
+                              return "A senha deve ter pelo menos 6 caracteres";
                             }
                             return null;
                           },
@@ -204,41 +241,7 @@ class _clienteState extends State<cliente> {
                                 child: ElevatedButton(
                                   onPressed: () async {
                                     if (cliKey.currentState!.validate()) {
-                                      String nome = nome1.text;
-                                      String email = email1.text;
-                                      String senha = senhaController.text;
-                                      String cpf = cpfController.text;
-
-                                      try {
-                                        await FirebaseFirestore.instance
-                                            .collection('users')
-                                            .add({
-                                          'nome': nome,
-                                          'email': email,
-                                          'senha': senha,
-                                          'cpf': cpf,
-                                          'tipo': 'cliente',
-                                          'created_at': Timestamp.now(),
-                                        });
-
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(const SnackBar(
-                                          content: Text(
-                                              'Cadastro realizado com sucesso!'),
-                                        ));
-
-                                        nome1.clear();
-                                        email1.clear();
-                                        senhaController.clear();
-                                        cpfController.clear();
-                                        setState(() {});
-                                      } catch (e) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(
-                                          content:
-                                              Text('Erro ao cadastrar: $e'),
-                                        ));
-                                      }
+                                      await gravarBD();
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(
