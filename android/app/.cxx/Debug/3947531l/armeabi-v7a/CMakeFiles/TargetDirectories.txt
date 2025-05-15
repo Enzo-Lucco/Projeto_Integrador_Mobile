@@ -1,0 +1,2 @@
+C:/Users/aluno/Documents/GitHub/Projeto_Integrador_Mobile/android/app/.cxx/Debug/3947531l/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/aluno/Documents/GitHub/Projeto_Integrador_Mobile/android/app/.cxx/Debug/3947531l/armeabi-v7a/CMakeFiles/rebuild_cache.dir

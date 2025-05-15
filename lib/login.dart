@@ -17,41 +17,57 @@ class _MyLoginState extends State<MyLogin> {
 
   Future<void> fazerLogin(String email, String senha) async {
     try {
+      // Realiza a autenticação com Firebase
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: senha);
 
       final uid = userCredential.user!.uid;
 
-      // Verifica se é ONG
+      // Verifica se o usuário é uma ONG
       final ongSnapshot =
           await FirebaseFirestore.instance.collection('ongs').doc(uid).get();
 
       if (ongSnapshot.exists) {
+        // Caso seja ONG, redireciona para a página correspondente
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text('Login como ONG')));
-        Navigator.pushNamed(context, '/hong');
+        Navigator.pushReplacementNamed(context, '/hong');
         return;
       }
 
-      // Verifica se é Usuário
+      // Verifica se o usuário é um usuário comum
       final userSnapshot = await FirebaseFirestore.instance
           .collection('usuarios')
           .doc(uid)
           .get();
 
       if (userSnapshot.exists) {
+        // Caso seja Usuário, redireciona para a página do usuário
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text('Login como Usuário')));
-        Navigator.pushNamed(context, '/HomeUsuario');
+        Navigator.pushReplacementNamed(context, '/HomeUsuario');
         return;
       }
 
-      // Nenhum tipo identificado
+      // Se não encontrar o usuário nem a ONG, mostra mensagem de erro
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Tipo de conta não identificado.')));
     } on FirebaseAuthException catch (e) {
+      // Caso o erro de autenticação aconteça, mostra a mensagem do erro
+      String mensagemErro;
+      switch (e.code) {
+        case 'user-not-found':
+          mensagemErro = 'Nenhum usuário encontrado para esse e-mail.';
+          break;
+        case 'wrong-password':
+          mensagemErro = 'Senha incorreta.';
+          break;
+        default:
+          mensagemErro = 'Erro desconhecido: ${e.message}';
+      }
+
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Erro: ${e.message}")),
+        SnackBar(content: Text(mensagemErro)),
       );
     }
   }
