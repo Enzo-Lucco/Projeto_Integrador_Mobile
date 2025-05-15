@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Firebase Firestore
 import 'package:flutter_application_projeto_integrador/cliente.dart';
 
 class cliente extends StatefulWidget {
@@ -13,6 +14,7 @@ class _clienteState extends State<cliente> {
   TextEditingController nome1 = TextEditingController();
   TextEditingController email1 = TextEditingController();
   TextEditingController senhaController = TextEditingController();
+  TextEditingController cpfController = TextEditingController();
 
   String _nomeC = "";
   String _emailC = "";
@@ -23,10 +25,9 @@ class _clienteState extends State<cliente> {
     final double larguraTela = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Colors.black, // Evita barra branca ao rolar
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
-          // Imagem de fundo
           Container(
             height: double.infinity,
             width: double.infinity,
@@ -37,12 +38,10 @@ class _clienteState extends State<cliente> {
               ),
             ),
           ),
-          
           SingleChildScrollView(
             child: Column(
               children: [
                 const SizedBox(height: 10),
-
                 SafeArea(
                   child: Align(
                     alignment: Alignment.topLeft,
@@ -58,8 +57,6 @@ class _clienteState extends State<cliente> {
                     ),
                   ),
                 ),
-
-                // Imagem de topo 
                 ClipRRect(
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
@@ -74,8 +71,6 @@ class _clienteState extends State<cliente> {
                     ),
                   ),
                 ),
-
-                // Container branco
                 Container(
                   width: larguraTela * 0.9,
                   decoration: const BoxDecoration(
@@ -93,9 +88,9 @@ class _clienteState extends State<cliente> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         const SizedBox(height: 10),
-                        FittedBox(
+                        const FittedBox(
                           fit: BoxFit.scaleDown,
-                          child: const Text(
+                          child: Text(
                             'CADASTRO DE CLIENTES',
                             style: TextStyle(
                               fontSize: 26,
@@ -105,7 +100,6 @@ class _clienteState extends State<cliente> {
                           ),
                         ),
                         const SizedBox(height: 40),
-
                         TextFormField(
                           controller: nome1,
                           keyboardType: TextInputType.text,
@@ -128,7 +122,6 @@ class _clienteState extends State<cliente> {
                           },
                         ),
                         const SizedBox(height: 30),
-
                         TextFormField(
                           controller: email1,
                           keyboardType: TextInputType.emailAddress,
@@ -154,7 +147,6 @@ class _clienteState extends State<cliente> {
                           },
                         ),
                         const SizedBox(height: 30),
-
                         TextFormField(
                           controller: senhaController,
                           obscureText: true,
@@ -178,8 +170,31 @@ class _clienteState extends State<cliente> {
                             return null;
                           },
                         ),
+                        const SizedBox(height: 30),
+                        TextFormField(
+                          controller: cpfController,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            labelText: 'CPF:',
+                            labelStyle: const TextStyle(color: Colors.white),
+                            prefixIcon: const Icon(Icons.credit_card),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            filled: true,
+                            fillColor: const Color.fromARGB(255, 1, 37, 54),
+                          ),
+                          style: const TextStyle(color: Colors.white),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Por favor, insira seu CPF';
+                            } else if (value.length != 11) {
+                              return 'O CPF deve ter 11 dígitos';
+                            }
+                            return null;
+                          },
+                        ),
                         const SizedBox(height: 40),
-
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -187,14 +202,43 @@ class _clienteState extends State<cliente> {
                               child: SizedBox(
                                 height: 50,
                                 child: ElevatedButton(
-                                  onPressed: () {
+                                  onPressed: () async {
                                     if (cliKey.currentState!.validate()) {
-                                      _nomeC = nome1.text;
-                                      _emailC = email1.text;
-                                      Cliente novoCliente =
-                                          Cliente(_emailC, _nomeC);
-                                      ListaCCliente.add(novoCliente);
-                                      setState(() {});
+                                      String nome = nome1.text;
+                                      String email = email1.text;
+                                      String senha = senhaController.text;
+                                      String cpf = cpfController.text;
+
+                                      try {
+                                        await FirebaseFirestore.instance
+                                            .collection('users')
+                                            .add({
+                                          'nome': nome,
+                                          'email': email,
+                                          'senha': senha,
+                                          'cpf': cpf,
+                                          'tipo': 'cliente',
+                                          'created_at': Timestamp.now(),
+                                        });
+
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                          content: Text(
+                                              'Cadastro realizado com sucesso!'),
+                                        ));
+
+                                        nome1.clear();
+                                        email1.clear();
+                                        senhaController.clear();
+                                        cpfController.clear();
+                                        setState(() {});
+                                      } catch (e) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                          content:
+                                              Text('Erro ao cadastrar: $e'),
+                                        ));
+                                      }
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(
@@ -217,6 +261,7 @@ class _clienteState extends State<cliente> {
                                     nome1.clear();
                                     email1.clear();
                                     senhaController.clear();
+                                    cpfController.clear();
                                     setState(() {});
                                   },
                                   style: ElevatedButton.styleFrom(
@@ -233,7 +278,6 @@ class _clienteState extends State<cliente> {
                           ],
                         ),
                         const SizedBox(height: 30),
-
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -256,8 +300,7 @@ class _clienteState extends State<cliente> {
                     ),
                   ),
                 ),
-
-                const SizedBox(height: 50), // Espaço após container
+                const SizedBox(height: 50),
               ],
             ),
           ),

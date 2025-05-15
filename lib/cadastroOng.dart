@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_projeto_integrador/ong.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ong extends StatefulWidget {
   const ong({super.key});
@@ -15,17 +13,38 @@ class _ongState extends State<ong> {
   TextEditingController nome1 = TextEditingController();
   TextEditingController email1 = TextEditingController();
   TextEditingController cnpj1 = TextEditingController();
-  Ong O = Ong();
+  TextEditingController senha1 = TextEditingController();
+  TextEditingController cep1 = TextEditingController();
+
+  final CollectionReference ongCollection =
+      FirebaseFirestore.instance.collection('ongs');
 
   Future<void> gravarBD() async {
-    var url = Uri.parse('http://localhost:8080/apiOng/inserirOng');
-    await http.post(url,
-        headers: {'Content-type': 'application/json; charset=UTF-8'},
-        body: jsonEncode({
-          "cnpj": O.cnpj,
-          "email": O.email,
-          "nome": O.nome,
-        }));
+    try {
+      await ongCollection.add({
+        "nome": nome1.text.trim(),
+        "email": email1.text.trim(),
+        "cnpj": cnpj1.text.trim(),
+        "senha": senha1.text.trim(),
+        "cep": cep1.text.trim(),
+        "tipo": "ong",
+        "created_at": Timestamp.now(),
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('ONG cadastrada com sucesso!')),
+      );
+
+      nome1.clear();
+      email1.clear();
+      cnpj1.clear();
+      senha1.clear();
+      cep1.clear();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao cadastrar ONG: $e')),
+      );
+    }
     setState(() {});
   }
 
@@ -68,7 +87,6 @@ class _ongState extends State<ong> {
                   ),
                   Container(
                     width: larguraTela * 0.88,
-                    height: alturaTela * 0.68,
                     padding: const EdgeInsets.symmetric(
                         vertical: 30, horizontal: 20),
                     decoration: const BoxDecoration(
@@ -91,44 +109,27 @@ class _ongState extends State<ong> {
                             ),
                           ),
                           const SizedBox(height: 30),
-                          TextFormField(
+
+                          // Nome
+                          campoTexto(
                             controller: nome1,
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              labelText: "Nome:",
-                              labelStyle: const TextStyle(color: Colors.white),
-                              prefixIcon: const Icon(Icons.badge),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              filled: true,
-                              fillColor: const Color.fromARGB(255, 1, 37, 54),
-                            ),
-                            style: const TextStyle(color: Colors.white),
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return "O nome não pode estar vazio";
-                              }
-                              return null;
-                            },
+                            label: "Nome:",
+                            icon: Icons.badge,
+                            validator: (value) => value == null || value.isEmpty
+                                ? "O nome não pode estar vazio"
+                                : null,
                           ),
+
                           const SizedBox(height: 30),
-                          TextFormField(
+
+                          // Email
+                          campoTexto(
                             controller: email1,
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
-                              labelText: "Email:",
-                              labelStyle: const TextStyle(color: Colors.white),
-                              prefixIcon: const Icon(Icons.email),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              filled: true,
-                              fillColor: const Color.fromARGB(255, 1, 37, 54),
-                            ),
-                            style: const TextStyle(color: Colors.white),
+                            label: "Email:",
+                            icon: Icons.email,
+                            tipoTeclado: TextInputType.emailAddress,
                             validator: (value) {
-                              if (value!.isEmpty) {
+                              if (value == null || value.isEmpty) {
                                 return "O Email não deve ser vazio";
                               } else if (!value.contains('@') ||
                                   !value.contains('.')) {
@@ -137,23 +138,17 @@ class _ongState extends State<ong> {
                               return null;
                             },
                           ),
+
                           const SizedBox(height: 30),
-                          TextFormField(
+
+                          // CNPJ
+                          campoTexto(
                             controller: cnpj1,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              labelText: "CNPJ:",
-                              labelStyle: const TextStyle(color: Colors.white),
-                              prefixIcon: const Icon(Icons.document_scanner),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              filled: true,
-                              fillColor: const Color.fromARGB(255, 1, 37, 54),
-                            ),
-                            style: const TextStyle(color: Colors.white),
+                            label: "CNPJ:",
+                            icon: Icons.document_scanner,
+                            tipoTeclado: TextInputType.number,
                             validator: (value) {
-                              if (value!.isEmpty) {
+                              if (value == null || value.isEmpty) {
                                 return "O CNPJ não pode estar vazio";
                               } else if (value.length < 14) {
                                 return "CNPJ inválido";
@@ -161,7 +156,36 @@ class _ongState extends State<ong> {
                               return null;
                             },
                           ),
+
+                          const SizedBox(height: 30),
+
+                          // Senha
+                          campoTexto(
+                            controller: senha1,
+                            label: "Senha:",
+                            icon: Icons.lock,
+                            obscure: true,
+                            validator: (value) =>
+                                value == null || value.length < 6
+                                    ? "A senha deve ter pelo menos 6 caracteres"
+                                    : null,
+                          ),
+
+                          const SizedBox(height: 30),
+
+                          // CEP
+                          campoTexto(
+                            controller: cep1,
+                            label: "CEP:",
+                            icon: Icons.location_on,
+                            validator: (value) => value == null || value.isEmpty
+                                ? "O CEP não pode estar vazio"
+                                : null,
+                          ),
+
                           const SizedBox(height: 40),
+
+                          // Botões
                           Row(
                             children: [
                               Expanded(
@@ -177,16 +201,7 @@ class _ongState extends State<ong> {
                                   ),
                                   onPressed: () {
                                     if (ongKey.currentState!.validate()) {
-                                      int cnpj = int.parse(cnpj1.text);
-                                      String email = email1.text;
-                                      String nome = nome1.text;
-                                      O.cnpj = cnpj;
-                                      O.email = email;
-                                      O.nome = nome;
                                       gravarBD();
-                                      nome1.clear();
-                                      email1.clear();
-                                      cnpj1.clear();
                                     }
                                   },
                                   child: const Text("Cadastrar",
@@ -209,6 +224,8 @@ class _ongState extends State<ong> {
                                     nome1.clear();
                                     email1.clear();
                                     cnpj1.clear();
+                                    senha1.clear();
+                                    cep1.clear();
                                   },
                                   child: const Text("Cancelar",
                                       style: TextStyle(color: Colors.white)),
@@ -250,6 +267,33 @@ class _ongState extends State<ong> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget campoTexto({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    TextInputType tipoTeclado = TextInputType.text,
+    bool obscure = false,
+    required String? Function(String?) validator,
+  }) {
+    return TextFormField(
+      controller: controller,
+      keyboardType: tipoTeclado,
+      obscureText: obscure,
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: const TextStyle(color: Colors.white),
+        prefixIcon: Icon(icon),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+        filled: true,
+        fillColor: const Color.fromARGB(255, 1, 37, 54),
+      ),
+      style: const TextStyle(color: Colors.white),
+      validator: validator,
     );
   }
 }
